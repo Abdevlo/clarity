@@ -71,31 +71,38 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
         ),
         child: SafeArea(
-          child: Column(
+          child: Stack(
             children: [
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  onPageChanged: (index) {
-                    setState(() => _currentPage = index);
-                  },
-                  itemCount: pages.length,
-                  itemBuilder: (context, index) {
-                    return OnboardingPageWidget(page: pages[index]);
-                  },
-                ),
+              // PageView - fills the entire space
+              PageView.builder(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() => _currentPage = index);
+                },
+                itemCount: pages.length,
+                itemBuilder: (context, index) {
+                  return OnboardingPageWidget(page: pages[index]);
+                },
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+              // Pill-shaped controls positioned above center
+              Positioned(
+                left: 24,
+                right: 24,
+                bottom: 100,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
+                        color: Colors.black.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.2),
+                          width: 1,
+                        ),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -109,8 +116,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   onTap: _currentPage > 0
                                       ? () {
                                           _pageController.previousPage(
-                                            duration:
-                                                Duration(milliseconds: 300),
+                                            duration: Duration(milliseconds: 300),
                                             curve: Curves.easeInOut,
                                           );
                                         }
@@ -121,8 +127,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     child: Icon(
                                       Icons.arrow_back,
                                       color: _currentPage > 0
-                                          ? Colors.black
-                                          : Colors.grey[400],
+                                          ? Colors.white
+                                          : Colors.grey[600],
                                       size: 24,
                                     ),
                                   ),
@@ -148,7 +154,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     padding: EdgeInsets.all(8),
                                     child: Icon(
                                       Icons.arrow_forward,
-                                      color: Colors.black,
+                                      color: Colors.white,
                                       size: 24,
                                     ),
                                   ),
@@ -168,7 +174,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4),
                                   color: _currentPage == index
-                                      ? const Color.fromARGB(255, 0, 242, 255)
+                                      ? Colors.cyan
                                       : Colors.white70,
                                 ),
                               ),
@@ -178,6 +184,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ),
                   ),
+                ),
+              ),
+              // Logo positioned in the center
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/logo.svg',
+                      width: 120,
+                      height: 120,
+                    ),
+                  ],
                 ),
               ),
             ],
