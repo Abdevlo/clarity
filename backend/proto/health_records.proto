@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package clarity.health;
+
+option go_package = "github.com/clarity/backend/gen/go/health";
+
+service HealthRecordsService {
+  rpc CreateRecord(CreateRecordRequest) returns (HealthRecord);
+  rpc GetRecord(GetRecordRequest) returns (HealthRecord);
+  rpc ListRecords(ListRecordsRequest) returns (ListRecordsResponse);
+  rpc UpdateRecord(UpdateRecordRequest) returns (HealthRecord);
+  rpc DeleteRecord(DeleteRecordRequest) returns (DeleteRecordResponse);
+}
+
+message HealthRecord {
+  string id = 1;
+  string user_id = 2;
+  string record_type = 3; // prescription, appointment, lab_result, symptom
+  string title = 4;
+  string description = 5;
+  map<string, string> metadata = 6;
+  string created_at = 7;
+  string updated_at = 8;
+}
+
+message CreateRecordRequest {
+  string user_id = 1;
+  string record_type = 2;
+  string title = 3;
+  string description = 4;
+  map<string, string> metadata = 5;
+}
+
+message GetRecordRequest {
+  string record_id = 1;
+}
+
+message ListRecordsRequest {
+  string user_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+
+message ListRecordsResponse {
+  repeated HealthRecord records = 1;
+  int32 total = 2;
+}
+
+message UpdateRecordRequest {
+  string record_id = 1;
+  string title = 2;
+  string description = 3;
+  map<string, string> metadata = 4;
+}
+
+message DeleteRecordRequest {
+  string record_id = 1;
+}
+
+message DeleteRecordResponse {
+  bool success = 1;
+}

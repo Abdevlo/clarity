@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package clarity.auth;
+
+option go_package = "github.com/clarity/backend/gen/go/auth";
+
+service AuthService {
+  rpc SendOTP(SendOTPRequest) returns (SendOTPResponse);
+  rpc VerifyOTP(VerifyOTPRequest) returns (VerifyOTPResponse);
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+}
+
+message SendOTPRequest {
+  string email = 1;
+}
+
+message SendOTPResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message VerifyOTPRequest {
+  string email = 1;
+  string otp = 2;
+}
+
+message VerifyOTPResponse {
+  bool success = 1;
+  string access_token = 2;
+  string refresh_token = 3;
+  User user = 4;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+message RefreshTokenResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+}
+
+message User {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  string date_of_birth = 4;
+  string gender = 5;
+  string blood_type = 6;
+  int64 created_at = 7;
+  int64 updated_at = 8;
+}

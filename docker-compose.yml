@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # Go Backend gRPC Server
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "50051:50051"
+    environment:
+      - DB_TYPE=sqlite
+      - DB_PATH=/data/clarity.db
+      - SERVER_PORT=50051
+      - SERVER_HOST=0.0.0.0
+      - JWT_SECRET=${JWT_SECRET:-your-secret-key}
+      - AI_PROVIDER=${AI_PROVIDER:-openai}
+      - AI_API_KEY=${AI_API_KEY:-}
+      - CLOUD_PROVIDER=${CLOUD_PROVIDER:-local}
+    volumes:
+      - ./backend/data:/data
+    networks:
+      - clarity-network
+    healthcheck:
+      test: ["CMD", "grpcurl", "-plaintext", "localhost:50051", "clarity.auth.AuthService/SendOTP"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  clarity-network:
+    driver: bridge
+
+volumes:
+  backend_data:

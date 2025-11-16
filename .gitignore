@@ -1,0 +1,49 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Databases
+*.db
+*.db-journal
+data/
+
+# Backend
+backend/bin/
+backend/dist/
+backend/gen/
+backend/.vscode/
+
+# Frontend
+frontend/build/
+frontend/.dart_tool/
+frontend/.flutter-plugins
+frontend/.packages
+frontend/.pub-cache/
+
+# Node/npm (if used)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# General
+tmp/
+temp/
+logs/
+*.log
+
+# CI/CD
+.github/workflows/*.yml.swp

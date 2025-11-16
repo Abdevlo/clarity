@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package clarity.ai;
+
+option go_package = "github.com/clarity/backend/gen/go/ai";
+
+service AIService {
+  rpc ScanPrescription(ScanPrescriptionRequest) returns (ScanPrescriptionResponse);
+  rpc SummarizeHealth(SummarizeHealthRequest) returns (SummarizeHealthResponse);
+  rpc DoctorChat(stream DoctorChatRequest) returns (stream DoctorChatResponse);
+}
+
+message ScanPrescriptionRequest {
+  string user_id = 1;
+  bytes image_data = 2;
+  string image_type = 3; // jpeg, png
+}
+
+message ScanPrescriptionResponse {
+  bool success = 1;
+  string prescription_text = 2;
+  map<string, string> extracted_data = 3; // medication, dosage, frequency, etc.
+  string error_message = 4;
+}
+
+message SummarizeHealthRequest {
+  string user_id = 1;
+  int32 days = 2; // last N days to summarize
+}
+
+message SummarizeHealthResponse {
+  bool success = 1;
+  string summary = 2;
+  repeated string key_findings = 3;
+  string recommendations = 4;
+}
+
+message DoctorChatRequest {
+  string user_id = 1;
+  string message = 2;
+  string conversation_id = 3;
+}
+
+message DoctorChatResponse {
+  string conversation_id = 1;
+  string response = 2;
+  bool is_ai = 3; // true if AI-generated, false if from doctor
+  int64 timestamp = 4;
+}
